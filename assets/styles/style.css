@@ -26,14 +26,10 @@ h1 {
     -webkit-text-stroke: 2px black;
 }
 
-
 .search-icon {
     width: 1.5rem;
 }
 
-.check-caja {
-    align-items: center;
-}
 
 .buscador {
     width: 35vw;
