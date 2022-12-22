@@ -1,0 +1,53 @@
+.imagen-logo {
+    width: 20rem;
+    padding: 2rem;
+}
+
+.enlaces {
+    padding: 0 1rem;
+}
+
+.enlaces:hover {
+    background-color: #e0046c;
+    border-radius: 1rem;
+    font-weight: 800;
+}
+
+h1 {
+    background-image: url(../img/h1fondo.jpeg);
+    background-size: 15rem;
+    min-height: 13vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-style: italic;
+    color: white;
+    -webkit-text-stroke: 2px black;
+}
+
+
+.search-icon {
+    width: 1.5rem;
+}
+
+.check-caja {
+    align-items: center;
+}
+
+.buscador {
+    width: 35vw;
+}
+
+@media (max-width:768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .buscador {
+        width: 100%;
+    }
+
+
+}
