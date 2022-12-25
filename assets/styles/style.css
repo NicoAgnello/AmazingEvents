@@ -80,12 +80,12 @@ h1 {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
-    padding: 0 2rem;
 }
 
 .tablas {
     border: 2px solid black;
     border-radius: 20px;
+    width: 80%;
 }
 
 .tablas th {
@@ -115,6 +115,21 @@ tr {
     font-weight: 750;
 
 }
+
+/* Cards Details */
+
+.main-details {
+    min-height: 90vh;
+}
+
+
+.container-details {
+    border: 3px solid black;
+    border-radius: 1rem;
+    width: 70%;
+    padding: 1rem;
+}
+
 
 /* Footer */
 
@@ -184,6 +199,15 @@ tr {
 
     .tablas td,
     tr {
-        padding: .1rem;
+        padding: .2rem;
+    }
+
+    .tablas {
+        width: 100%;
+    }
+
+    .carta-details {
+        width: auto;
+        height: auto;
     }
 }
