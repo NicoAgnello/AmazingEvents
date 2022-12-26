@@ -144,7 +144,7 @@ tr {
     font-size: 1.8rem;
     font-family: Arial, Helvetica, sans-serif;
     color: rgb(255, 255, 255);
-    -webkit-text-stroke: 1px rgb(5, 5, 5);
+    -webkit-text-stroke: 1.6px rgb(5, 5, 5);
 }
 
 .cuerpo-details h6 {
@@ -156,8 +156,9 @@ tr {
 .lista-details,
 .price-date-details h6 {
     font-weight: 800;
+    font-size: 1.2rem;
     color: rgb(255, 255, 255);
-    -webkit-text-stroke: 1px black;
+    -webkit-text-stroke: 1px rgb(5, 5, 5);
 }
 
 .lista-details {
