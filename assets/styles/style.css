@@ -7,6 +7,10 @@ main {
     background-color: rgba(128, 128, 128, 0.164);
 }
 
+.altura-total {
+    min-height: 85vh;
+}
+
 .enlaces {
     padding: 1rem 2rem;
     color: white;
@@ -125,9 +129,9 @@ tr {
 
 
 .container-details {
-    border: 3px solid black;
+    border: 2px solid black;
     border-radius: 1rem;
-    width: 70%;
+    width: 90%;
     padding: 1rem;
 }
 
@@ -166,11 +170,14 @@ tr {
     justify-content: space-evenly;
 }
 
+
+
 /* Contact */
 
 .formulario1 {
-    min-height: 60vh;
-    background-color: grey;
+    border: 2px solid rgb(87, 85, 85);
+    width: 50%;
+    background-color: rgb(218, 215, 215);
 }
 
 .input-mail-name {
@@ -252,6 +259,21 @@ tr {
 
     .price-date-details {
         flex-direction: column;
+    }
+
+}
+
+@media (max-width: 1352px) {
+    .formulario1 {
+        width: 80%;
+    }
+
+    .input-mail-name {
+        width: 60vw;
+    }
+
+    .input-text-area {
+        width: 62vw;
     }
 
 }
