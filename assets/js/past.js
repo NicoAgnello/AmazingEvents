@@ -2,8 +2,19 @@
 let eventos = data.events
 let currentDate = data.currentDate
 
-let todosLosEventos = [].concat(eventos);
-let template = generarTemplate(todosLosEventos);
+let pastEvents = filtroEventosPasados(data.currentDate, eventos);
+
+function filtroEventosPasados(fechaActual, eventos) {
+    let aux = [];
+    for (const evento of eventos) {
+        if (evento.date < fechaActual) {
+            aux.push(evento)
+        }
+    }
+    return aux;
+}
+
+let template = generarTemplate(pastEvents);
 
 
 function generarTemplate(array1) {
@@ -20,9 +31,9 @@ function generarTemplate(array1) {
                     <h6 class="card-text">Price: ${event.price}</h6>
                     <a class="ver-mas" href="./details.html">Ver mas...</a>
                 </div>
-            </div>
-        </div>
-    </div>
-    `
+             </div>
+         </div>
+     </div>
+     `
     } return template;
 }
