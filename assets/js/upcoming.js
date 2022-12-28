@@ -2,12 +2,12 @@
 let eventos = data.events
 let currentDate = data.currentDate
 
-let upcomingEvents = filtroEventosFuturos(data.currentDate, eventos);
+let upcomingEvents = filtroEventosFuturos(currentDate, eventos);
 
 function filtroEventosFuturos(fechaActual, eventos) {
     let aux = [];
     for (const evento of eventos) {
-        if (fechaActual > evento.date) {
+        if (fechaActual < evento.date) {
             aux.push(evento)
         }
     }
@@ -19,7 +19,6 @@ let template = generarTemplate(upcomingEvents);
 
 function generarTemplate(array1) {
     let container = document.getElementById("sectionCards");
-
     for (const event of array1) {
         container.innerHTML += `
     <div class="col p-4">

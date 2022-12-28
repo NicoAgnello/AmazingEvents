@@ -7,7 +7,6 @@ let template = generarTemplate(todosLosEventos);
 
 
 
-
 function generarTemplate(array1) {
     let container = document.getElementById("sectionCards");
     for (const event of array1) {
