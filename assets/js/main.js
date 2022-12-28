@@ -6,10 +6,12 @@ let todosLosEventos = [].concat(eventos);
 let template = generarTemplate(todosLosEventos);
 
 
+
+
 function generarTemplate(array1) {
-    let template = ``
+    let container = document.getElementById("sectionCards");
     for (const event of array1) {
-        template += `
+        container.innerHTML += `
     <div class="col p-4">
         <div class="card carta">
             <img src="${event.image}" class="card-img-top" alt="fiesta-comida">
@@ -24,5 +26,5 @@ function generarTemplate(array1) {
         </div>
     </div>
     `
-    } return template;
+    } return container;
 }

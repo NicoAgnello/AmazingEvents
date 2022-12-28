@@ -2,7 +2,7 @@
 let eventos = data.events
 let currentDate = data.currentDate
 
-let pastEvents = filtroEventosPasados(data.currentDate, eventos);
+let pastEvents = filtroEventosPasados(currentDate, eventos);
 
 function filtroEventosPasados(fechaActual, eventos) {
     let aux = [];
@@ -18,9 +18,9 @@ let template = generarTemplate(pastEvents);
 
 
 function generarTemplate(array1) {
-    let template = ``
+    let container = document.getElementById("sectionCards");
     for (const event of array1) {
-        template += `
+        container.innerHTML += `
     <div class="col p-4">
         <div class="card carta">
             <img src="${event.image}" class="card-img-top" alt="fiesta-comida">
@@ -35,5 +35,5 @@ function generarTemplate(array1) {
          </div>
      </div>
      `
-    } return template;
+    } return container;
 }
