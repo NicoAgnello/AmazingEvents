@@ -33,7 +33,10 @@ const checkboxs = document.getElementById("checkbox-js");
 
 checkboxs.addEventListener("change", filtroCheckbox);
 
+const categorias = eventos.map((evento) => evento.category);
+const categoriasSinRepetir = Array.from(new Set(categorias));
 
+console.log(categoriasSinRepetir);
 
 // function filtroCheckbox(event) {
 //   let checkboxFiltrado = eventos.filter((evento) => {
