@@ -1,16 +1,14 @@
-
-let eventos = data.events
-let currentDate = data.currentDate
+let eventos = data.events;
+let currentDate = data.currentDate;
 
 let todosLosEventos = [].concat(eventos);
-let template = generarTemplate(todosLosEventos);
 
+let container = document.getElementById("sectionCards");
 
-
-function generarTemplate(array1) {
-    let container = document.getElementById("sectionCards");
-    for (const event of array1) {
-        container.innerHTML += `
+function generarTemplate(array1, container) {
+  let template = "";
+  for (const event of array1) {
+    template += `
     <div class="col p-4">
         <div class="card carta">
             <img src="${event.image}" class="card-img-top" alt="fiesta-comida">
@@ -24,6 +22,33 @@ function generarTemplate(array1) {
             </div>
         </div>
     </div>
-    `
-    } return container;
+    `;
+  }
+  container.innerHTML = template;
+}
+
+generarTemplate(todosLosEventos, container);
+
+const checkboxs = document.getElementById("checkbox-js");
+
+checkboxs.addEventListener("change", filtroCheckbox);
+
+
+
+// function filtroCheckbox(event) {
+//   let checkboxFiltrado = eventos.filter((evento) => {
+//     return evento.category.includes(event.target.value);
+//   });
+//   generarTemplate(checkboxFiltrado, container);
+// }
+
+const buscador = document.getElementById("buscador-js");
+
+buscador.addEventListener("input", busquedaPorTexto);
+
+function busquedaPorTexto(event) {
+  let eventosFiltrados = eventos.filter((evento) => {
+    return evento.name.toLowerCase().includes(event.target.value.toLowerCase());
+  });
+  generarTemplate(eventosFiltrados, container); // Array con objetos
 }

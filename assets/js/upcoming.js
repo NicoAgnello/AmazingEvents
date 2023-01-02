@@ -14,7 +14,6 @@ function filtroEventosFuturos(fechaActual, eventos) {
     return aux;
 }
 
-
 let template = generarTemplate(upcomingEvents);
 
 function generarTemplate(array1) {
