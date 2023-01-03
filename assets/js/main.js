@@ -93,6 +93,6 @@ function dobleFiltro() {
 }
 
 function generarError() {
-  let template = `<h1 class="">No matches, please change filters</h1>`;
+  let template = `<h2 class="text-center p-4">No matches, please change filters</h1>`;
   document.getElementById("main").innerHTML = template;
 }
