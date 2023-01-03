@@ -3,11 +3,9 @@ let currentDate = data.currentDate;
 
 let todosLosEventos = [].concat(eventos);
 
-let container = document.getElementById("sectionCards");
-
-function generarTemplate(array1, container) {
+function generarTemplate(eventos) {
   let template = "";
-  for (const event of array1) {
+  for (const event of eventos) {
     template += `
     <div class="col p-4">
         <div class="card carta">
@@ -24,34 +22,65 @@ function generarTemplate(array1, container) {
     </div>
     `;
   }
-  container.innerHTML = template;
+  document.getElementById("sectionCards").innerHTML = template;
 }
 
-generarTemplate(todosLosEventos, container);
+generarTemplate(todosLosEventos);
 
 const checkboxs = document.getElementById("checkbox-js");
-
-checkboxs.addEventListener("change", filtroCheckbox);
+const buscador = document.getElementById("buscador-js");
 
 const categorias = eventos.map((evento) => evento.category);
 const categoriasSinRepetir = Array.from(new Set(categorias));
 
-console.log(categoriasSinRepetir);
+function generarFiltro() {
+  let template = "";
+  for (const categoria of categoriasSinRepetir) {
+    template += `
+    <label class="d-flex flex-column ">
+          <input id="${categoria}" type="checkbox" name="${categoria}">
+          ${categoria}
+      </label>
+    `;
+  }
+  checkboxs.innerHTML = template;
+}
+generarFiltro();
 
-// function filtroCheckbox(event) {
-//   let checkboxFiltrado = eventos.filter((evento) => {
-//     return evento.category.includes(event.target.value);
-//   });
-//   generarTemplate(checkboxFiltrado, container);
-// }
-
-const buscador = document.getElementById("buscador-js");
+const addListener = () => {
+  categoriasSinRepetir.forEach((categoria) => {
+    document
+      .getElementById(categoria)
+      .addEventListener("input", filtroCheckbox());
+  });
+};
 
 buscador.addEventListener("input", busquedaPorTexto);
+checkboxs.addEventListener("input", filtroCheckbox);
 
 function busquedaPorTexto(event) {
   let eventosFiltrados = eventos.filter((evento) => {
     return evento.name.toLowerCase().includes(event.target.value.toLowerCase());
   });
-  generarTemplate(eventosFiltrados, container); // Array con objetos
+  generarTemplate(eventosFiltrados); // Array con objetos
+}
+
+function filtroCheckbox() {
+  const checkedInputs = document.querySelectorAll(
+    "input[type='checkbox']:checked"
+  );
+  console.log(checkedInputs);
+  if (checkedInputs.length === 0) {
+    return generarTemplate(todosLosEventos);
+  }
+  let eventosFiltrados = [];
+  checkedInputs.forEach(
+    (categoria) =>
+      (eventosFiltrados = eventosFiltrados.concat(
+        Array.from(eventos).filter(
+          (evento) => evento.category === categoria.name
+        )
+      ))
+  );
+  generarTemplate(eventosFiltrados);
 }
