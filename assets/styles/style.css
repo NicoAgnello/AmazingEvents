@@ -5,6 +5,7 @@
 
 main {
     background-color: rgba(128, 128, 128, 0.164);
+    min-height: 80vh;
 }
 
 .altura-total {

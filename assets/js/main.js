@@ -15,7 +15,7 @@ function generarTemplate(eventos) {
                 <p class="card-text text-center">${event.description}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="card-text">Price: ${event.price}</h6>
-                    <a class="ver-mas" href="./details.html">Ver mas...</a>
+                    <a class="ver-mas" href="./details.html">See more...</a>
                 </div>
             </div>
         </div>
@@ -30,57 +30,69 @@ generarTemplate(todosLosEventos);
 const checkboxs = document.getElementById("checkbox-js");
 const buscador = document.getElementById("buscador-js");
 
+buscador.addEventListener("input", dobleFiltro);
+checkboxs.addEventListener("input", dobleFiltro);
+
 const categorias = eventos.map((evento) => evento.category);
 const categoriasSinRepetir = Array.from(new Set(categorias));
 
-function generarFiltro() {
+function generarChecks() {
   let template = "";
   for (const categoria of categoriasSinRepetir) {
     template += `
     <label class="d-flex flex-column ">
-          <input id="${categoria}" type="checkbox" name="${categoria}">
+          <input class="checkboxes" id="${categoria}" type="checkbox" name="${categoria}">
           ${categoria}
       </label>
     `;
   }
   checkboxs.innerHTML = template;
 }
-generarFiltro();
+generarChecks();
 
-const addListener = () => {
-  categoriasSinRepetir.forEach((categoria) => {
-    document
-      .getElementById(categoria)
-      .addEventListener("input", filtroCheckbox());
-  });
-};
-
-buscador.addEventListener("input", busquedaPorTexto);
-checkboxs.addEventListener("input", filtroCheckbox);
-
-function busquedaPorTexto(event) {
+function busquedaPorTexto() {
   let eventosFiltrados = eventos.filter((evento) => {
-    return evento.name.toLowerCase().includes(event.target.value.toLowerCase());
+    return evento.name.toLowerCase().includes(buscador.value.toLowerCase());
   });
-  generarTemplate(eventosFiltrados); // Array con objetos
+  return eventosFiltrados;
 }
 
-function filtroCheckbox() {
-  const checkedInputs = document.querySelectorAll(
-    "input[type='checkbox']:checked"
-  );
-  console.log(checkedInputs);
-  if (checkedInputs.length === 0) {
-    return generarTemplate(todosLosEventos);
-  }
+const checkboxes = document.querySelectorAll(".checkboxes");
+
+function filtroCheckbox(datos) {
   let eventosFiltrados = [];
-  checkedInputs.forEach(
-    (categoria) =>
-      (eventosFiltrados = eventosFiltrados.concat(
-        Array.from(eventos).filter(
-          (evento) => evento.category === categoria.name
-        )
-      ))
+  for (const input of checkboxes) {
+    if (input.checked) {
+      eventosFiltrados = eventosFiltrados.concat(
+        eventos
+          .filter((evento) => {
+            return evento.category.toLowerCase() === input.name.toLowerCase();
+          })
+          .map((evento) => evento.category.toLowerCase())
+      );
+    }
+  }
+  let filtro = datos.filter((eventos) =>
+    eventosFiltrados.includes(eventos.category.toLowerCase())
   );
-  generarTemplate(eventosFiltrados);
+  if (eventosFiltrados.length === 0) {
+    return todosLosEventos;
+  } else {
+    return filtro;
+  }
+}
+
+function dobleFiltro() {
+  let filtroBusqueda = busquedaPorTexto();
+  let filterCheckbox = filtroCheckbox(filtroBusqueda);
+  if (filterCheckbox.length === 0) {
+    generarError();
+  } else {
+    generarTemplate(filterCheckbox);
+  }
+}
+
+function generarError() {
+  let template = `<h1 class="">No matches, please change filters</h1>`;
+  document.getElementById("main").innerHTML = template;
 }
