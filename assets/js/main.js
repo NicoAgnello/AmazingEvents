@@ -1,11 +1,20 @@
 let eventos = data.events;
 let currentDate = data.currentDate;
+let todosLosEventos;
 
-let todosLosEventos = [].concat(eventos);
+const sitio = document.URL.split("/").pop().split(".").shift();
 
-function generarTemplate(eventos) {
+if (sitio === "index") {
+  todosLosEventos = [].concat(eventos);
+} else if (sitio === "upcoming") {
+  todosLosEventos = eventos.filter((evento) => evento.date > currentDate);
+} else if (sitio === "past") {
+  todosLosEventos = eventos.filter((evento) => evento.date < currentDate);
+}
+
+function generarTemplate(array1) {
   let template = "";
-  for (const event of eventos) {
+  for (const event of array1) {
     template += `
     <div class="col p-4">
         <div class="card carta">
@@ -27,14 +36,11 @@ function generarTemplate(eventos) {
 
 generarTemplate(todosLosEventos);
 
-const checkboxs = document.getElementById("checkbox-js");
-const buscador = document.getElementById("buscador-js");
-
-buscador.addEventListener("input", dobleFiltro);
-checkboxs.addEventListener("input", dobleFiltro);
-
 const categorias = eventos.map((evento) => evento.category);
 const categoriasSinRepetir = Array.from(new Set(categorias));
+
+const checkboxs = document.getElementById("checkbox-js");
+const buscador = document.getElementById("buscador-js");
 
 function generarChecks() {
   let template = "";
@@ -50,8 +56,11 @@ function generarChecks() {
 }
 generarChecks();
 
+buscador.addEventListener("input", dobleFiltro);
+checkboxs.addEventListener("input", dobleFiltro);
+
 function busquedaPorTexto() {
-  let eventosFiltrados = eventos.filter((evento) => {
+  let eventosFiltrados = todosLosEventos.filter((evento) => {
     return evento.name.toLowerCase().includes(buscador.value.toLowerCase());
   });
   return eventosFiltrados;
@@ -59,40 +68,35 @@ function busquedaPorTexto() {
 
 const checkboxes = document.querySelectorAll(".checkboxes");
 
-function filtroCheckbox(datos) {
-  let eventosFiltrados = [];
+function filtroCheckbox(events) {
+  const filtrosAplicados = [];
   for (const input of checkboxes) {
     if (input.checked) {
-      eventosFiltrados = eventosFiltrados.concat(
-        eventos
-          .filter((evento) => {
-            return evento.category.toLowerCase() === input.name.toLowerCase();
-          })
-          .map((evento) => evento.category.toLowerCase())
-      );
+      filtrosAplicados.push(input.name.toLowerCase());
     }
   }
-  let filtro = datos.filter((eventos) =>
-    eventosFiltrados.includes(eventos.category.toLowerCase())
-  );
-  if (eventosFiltrados.length === 0) {
-    return todosLosEventos;
-  } else {
-    return filtro;
+  if (filtrosAplicados.length === 0) {
+    return events;
   }
+  const eventosFiltrados = events.filter((evento) =>
+    filtrosAplicados.includes(evento.category.toLowerCase())
+  );
+  return eventosFiltrados;
 }
 
 function dobleFiltro() {
-  let filtroBusqueda = busquedaPorTexto();
-  let filterCheckbox = filtroCheckbox(filtroBusqueda);
-  if (filterCheckbox.length === 0) {
+  const eventosFiltradosPorBusqueda = busquedaPorTexto();
+  const eventosFiltradosPorCheck = filtroCheckbox(eventosFiltradosPorBusqueda);
+  if (eventosFiltradosPorCheck.length === 0) {
     generarError();
   } else {
-    generarTemplate(filterCheckbox);
+    generarTemplate(eventosFiltradosPorCheck);
+    document.getElementById("error-message").innerHTML = "";
   }
 }
 
 function generarError() {
+  document.getElementById("sectionCards").innerHTML = "";
   let template = `<h2 class="text-center p-4">No matches, please change filters</h1>`;
-  document.getElementById("main").innerHTML = template;
+  document.getElementById("error-message").innerHTML = template;
 }
