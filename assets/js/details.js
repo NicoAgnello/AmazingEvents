@@ -14,7 +14,8 @@ const eventoEncontrado = todosLosEventos.find((evento) => evento._id === id);
 function generarCardDetails(evento) {
   contenedorDetails.innerHTML = "";
   let template;
-  template = `<div class="row d-flex flex-row justify-content-evenly gap-2 ">
+  if (evento) {
+    template = `<div class="row d-flex flex-row justify-content-evenly gap-2 ">
     <img class=" col-12 col-xl-5 d-flex justify-content-center "
         src="${evento.image}" alt="imagen-details">
     <div class="card col-12 col-xl-6 box-detalles">
@@ -34,6 +35,9 @@ function generarCardDetails(evento) {
         </div>
     </div>
 </div>`;
+  } else {
+    template = `<h2 class="text-center p-4">No matches</h2>`;
+  }
   contenedorDetails.innerHTML = template;
 }
 

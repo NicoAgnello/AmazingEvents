@@ -41,6 +41,7 @@ const categoriasSinRepetir = Array.from(new Set(categorias));
 
 const checkboxs = document.getElementById("checkbox-js");
 const buscador = document.getElementById("buscador-js");
+const botonBuscar = document.getElementById("boton-buscar");
 
 function generarChecks() {
   let template = "";
@@ -56,7 +57,7 @@ function generarChecks() {
 }
 generarChecks();
 
-buscador.addEventListener("input", dobleFiltro);
+botonBuscar.addEventListener("click", dobleFiltro);
 checkboxs.addEventListener("input", dobleFiltro);
 
 function busquedaPorTexto() {
@@ -97,6 +98,6 @@ function dobleFiltro() {
 
 function generarError() {
   document.getElementById("sectionCards").innerHTML = "";
-  let template = `<h2 class="text-center p-4">No matches, please change filters</h1>`;
+  let template = `<h2 class="text-center p-4">No matches, please change filters</h2>`;
   document.getElementById("error-message").innerHTML = template;
 }

@@ -127,14 +127,15 @@ tr {
 
 
 .container-details {
-    border: 2px solid black;
+    border: 2px solid rgb(170, 169, 169);
     border-radius: 1rem;
     width: 90%;
-    padding: 1rem;
+    padding-block: 2rem;
+    padding-inline: 1.5rem;
 }
 
 .box-detalles {
-    background-color: #961c55;
+    background-color: #9b054b;
 }
 
 .cuerpo-details h5 {
