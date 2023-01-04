@@ -4,7 +4,7 @@ let todosLosEventos;
 
 const sitio = document.URL.split("/").pop().split(".").shift();
 
-if (sitio === "index") {
+if (sitio === "index" || sitio === "") {
   todosLosEventos = [].concat(eventos);
 } else if (sitio === "upcoming") {
   todosLosEventos = eventos.filter((evento) => evento.date > currentDate);
