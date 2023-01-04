@@ -24,7 +24,7 @@ function generarTemplate(array1) {
                 <p class="card-text text-center">${event.description}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="card-text">Price: ${event.price}</h6>
-                    <a class="ver-mas" href="./details.html">See more...</a>
+                    <a class="ver-mas" href="./details.html?id=${event._id}">See more...</a>
                 </div>
             </div>
         </div>
