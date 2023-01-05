@@ -26,7 +26,11 @@ function generarCardDetails(evento) {
                 <li class="list-group-item">Category:${evento.category}</li>
                 <li class="list-group-item">Place: ${evento.place}</li>
                 <li class="list-group-item">Capacity: ${evento.capacity} </li>
-                <li class="list-group-item">Assistance: ${evento.assistance}</li>
+                <li class="list-group-item">${
+                  evento.assistance ? "Assistance" : "Estimate"
+                }: ${
+      evento.assistance ? evento.assistance : evento.estimate
+    }</li>
             </ul>
             <div class=" price-date-details p-2">
                 <h6 class="card-title text-center">${evento.date}</h6>
