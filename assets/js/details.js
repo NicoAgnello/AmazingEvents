@@ -1,5 +1,12 @@
-let eventos = data.events;
-let todosLosEventos = [].concat(eventos);
+fetch("https://mindhub-xj03.onrender.com/api/amazing")
+  .then((resolve) => resolve.json())
+  .then((datos) => {
+    document.getElementById("message").innerHTML = "";
+    generarCardDetails(datos.events.find((evento) => evento._id === id));
+  })
+  .catch(
+    () => (document.getElementById("message").innerHTML = `<h2 class="text-center p-4">Error trying to fetch data</h2>`)
+  );
 
 const stringUrlConID = location.search;
 
@@ -8,8 +15,6 @@ const generarUrl = new URLSearchParams(stringUrlConID);
 const id = generarUrl.get("id");
 
 const contenedorDetails = document.getElementById("contenedor-details");
-
-const eventoEncontrado = todosLosEventos.find((evento) => evento._id === id);
 
 function generarCardDetails(evento) {
   contenedorDetails.innerHTML = "";
@@ -26,9 +31,7 @@ function generarCardDetails(evento) {
                 <li class="list-group-item">Category:${evento.category}</li>
                 <li class="list-group-item">Place: ${evento.place}</li>
                 <li class="list-group-item">Capacity: ${evento.capacity} </li>
-                <li class="list-group-item">${
-                  evento.assistance ? "Assistance" : "Estimate"
-                }: ${
+                <li class="list-group-item">${evento.assistance ? "Assistance" : "Estimate"}: ${
       evento.assistance ? evento.assistance : evento.estimate
     }</li>
             </ul>
@@ -44,5 +47,3 @@ function generarCardDetails(evento) {
   }
   contenedorDetails.innerHTML = template;
 }
-
-generarCardDetails(eventoEncontrado);

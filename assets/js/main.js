@@ -1,20 +1,33 @@
-let eventos = data.events;
-let currentDate = data.currentDate;
-let todosLosEventos;
+let events;
 
-const sitio = document.URL.split("/").pop().split(".").shift();
+fetch("https://mindhub-xj03.onrender.com/api/amazing")
+  .then((resolve) => resolve.json())
+  .then((datos) => {
+    filterEvents(datos);
+    document.getElementById("message").innerHTML = "";
+    generarTemplate(events);
+    generarChecks();
+    botonBuscar.addEventListener("click", dobleFiltro);
+    checkboxs.addEventListener("input", dobleFiltro);
+  })
+  .catch(
+    () => (document.getElementById("message").innerHTML = `<h2 class="text-center p-4">Error trying to fetch data</h2>`)
+  );
 
-if (sitio === "index" || sitio === "") {
-  todosLosEventos = [].concat(eventos);
-} else if (sitio === "upcoming") {
-  todosLosEventos = eventos.filter((evento) => evento.date > currentDate);
-} else if (sitio === "past") {
-  todosLosEventos = eventos.filter((evento) => evento.date < currentDate);
+function filterEvents(eventsData) {
+  const sitio = document.URL.split("/").pop().split(".").shift();
+  if (sitio === "index" || sitio === "") {
+    events = [].concat(eventsData.events);
+  } else if (sitio === "upcoming") {
+    events = eventsData.events.filter((evento) => evento.date > eventsData.currentDate);
+  } else if (sitio === "past") {
+    events = eventsData.events.filter((evento) => evento.date < eventsData.currentDate);
+  }
 }
 
-function generarTemplate(array1) {
+function generarTemplate(eventsToDisplay) {
   let template = "";
-  for (const event of array1) {
+  for (const event of eventsToDisplay) {
     template += `
     <div class="col p-4">
         <div class="card carta">
@@ -34,18 +47,14 @@ function generarTemplate(array1) {
   document.getElementById("sectionCards").innerHTML = template;
 }
 
-generarTemplate(todosLosEventos);
-
-const categorias = eventos.map((evento) => evento.category);
-const categoriasSinRepetir = Array.from(new Set(categorias));
-
 const checkboxs = document.getElementById("checkbox-js");
 const buscador = document.getElementById("buscador-js");
 const botonBuscar = document.getElementById("boton-buscar");
 
 function generarChecks() {
+  const categorias = new Set(events.map((evento) => evento.category));
   let template = "";
-  for (const categoria of categoriasSinRepetir) {
+  for (const categoria of categorias) {
     template += `
     <label class="d-flex flex-column ">
           <input class="checkboxes" id="${categoria}" type="checkbox" name="${categoria}">
@@ -55,21 +64,14 @@ function generarChecks() {
   }
   checkboxs.innerHTML = template;
 }
-generarChecks();
-
-botonBuscar.addEventListener("click", dobleFiltro);
-checkboxs.addEventListener("input", dobleFiltro);
 
 function busquedaPorTexto() {
-  let eventosFiltrados = todosLosEventos.filter((evento) => {
-    return evento.name.toLowerCase().includes(buscador.value.toLowerCase());
-  });
+  let eventosFiltrados = events.filter((evento) => evento.name.toLowerCase().includes(buscador.value.toLowerCase()));
   return eventosFiltrados;
 }
 
-const checkboxes = document.querySelectorAll(".checkboxes");
-
-function filtroCheckbox(events) {
+function filtroCheckbox(eventsToFilter) {
+  const checkboxes = document.querySelectorAll(".checkboxes");
   const filtrosAplicados = [];
   for (const input of checkboxes) {
     if (input.checked) {
@@ -77,11 +79,9 @@ function filtroCheckbox(events) {
     }
   }
   if (filtrosAplicados.length === 0) {
-    return events;
+    return eventsToFilter;
   }
-  const eventosFiltrados = events.filter((evento) =>
-    filtrosAplicados.includes(evento.category.toLowerCase())
-  );
+  const eventosFiltrados = eventsToFilter.filter((evento) => filtrosAplicados.includes(evento.category.toLowerCase()));
   return eventosFiltrados;
 }
 
@@ -92,12 +92,12 @@ function dobleFiltro() {
     generarError();
   } else {
     generarTemplate(eventosFiltradosPorCheck);
-    document.getElementById("error-message").innerHTML = "";
+    document.getElementById("message").innerHTML = "";
   }
 }
 
 function generarError() {
   document.getElementById("sectionCards").innerHTML = "";
   let template = `<h2 class="text-center p-4">No matches, please change filters</h2>`;
-  document.getElementById("error-message").innerHTML = template;
+  document.getElementById("message").innerHTML = template;
 }
