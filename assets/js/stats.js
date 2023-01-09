@@ -21,16 +21,20 @@ function attendance(events) {
 }
 
 function mostAttendance(events) {
-  document.getElementById("highest-attendance").innerHTML = events[0].name;
+  document.getElementById("highest-attendance").innerHTML = `${events[0].name} ${events[0].attendance}%`;
 }
 
 function lowestAttendance(events) {
-  document.getElementById("lowest-attendance").innerHTML = events[events.length - 1].name;
+  document.getElementById("lowest-attendance").innerHTML = `${events[events.length - 1].name}  ${events[
+    events.length - 1
+  ].attendance.toFixed(2)} %`;
 }
 
 function largerCapacity(events) {
   const eventsByCapacity = events.sort((a, b) => b.capacity - a.capacity);
-  document.getElementById("highest-capacity").innerHTML = eventsByCapacity[0].name;
+  document.getElementById(
+    "highest-capacity"
+  ).innerHTML = `${eventsByCapacity[0].name} - ${eventsByCapacity[0].capacity}`;
 }
 
 function upcomingByCategory(eventsData) {
@@ -44,7 +48,7 @@ function upcomingByCategory(eventsData) {
   for (const event of revenueAttendanceUpcoming) {
     template += ` <tr>
     <td>${event.category}</td>
-    <td>${event.revenue}</td>
+    <td>${event.revenue.toLocaleString()}</td>
     <td>${event.attendance.toFixed(2)}%</td>
     </tr>`;
   }
@@ -62,7 +66,7 @@ function pastByCategory(eventsData) {
   for (const event of revenueAttendancePast) {
     template += ` <tr>
     <td>${event.category}</td>
-    <td>${event.revenue}</td>
+    <td>${event.revenue.toLocaleString()}</td>
     <td>${event.attendance.toFixed(2)}%</td>
     </tr>`;
   }
