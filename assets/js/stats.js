@@ -1,12 +1,15 @@
 fetch("https://mindhub-xj03.onrender.com/api/amazing")
   .then((resolve) => resolve.json())
-  .then((datos) => {
-    const eventsByAttendance = attendance(datos.events);
+  .then((data) => {
+    const datos = data;
+    const upcomingEvents = datos.events.filter((event) => event.date > datos.currentDate);
+    const pastEvents = datos.events.filter((event) => event.date < datos.currentDate);
+    const eventsByAttendance = attendance(pastEvents);
     mostAttendance(eventsByAttendance);
     lowestAttendance(eventsByAttendance);
     largerCapacity(eventsByAttendance);
-    upcomingByCategory(datos);
-    pastByCategory(datos);
+    eventsByCategory(upcomingEvents, "upcoming-events");
+    eventsByCategory(pastEvents, "past-events");
   })
   .catch((error) => console.log(error));
 
@@ -21,7 +24,7 @@ function attendance(events) {
 }
 
 function mostAttendance(events) {
-  document.getElementById("highest-attendance").innerHTML = `${events[0].name} ${events[0].attendance}%`;
+  document.getElementById("highest-attendance").innerHTML = `${events[0].name} ${events[0].attendance.toFixed(2)}%`;
 }
 
 function lowestAttendance(events) {
@@ -37,38 +40,34 @@ function largerCapacity(events) {
   ).innerHTML = `${eventsByCapacity[0].name} - ${eventsByCapacity[0].capacity}`;
 }
 
-function upcomingByCategory(eventsData) {
-  const upcomingEvents = eventsData.events.filter((event) => event.date > eventsData.currentDate);
-  const revenueAttendanceUpcoming = upcomingEvents.map((e) => ({
+function eventsByCategory(eventsData, where) {
+  const revenueAttendanceUpcoming = eventsData.map((e) => ({
     ...e,
-    revenue: e.price * e.estimate,
+    revenue: e.price * (e.estimate ?? e.assistance),
     attendance: ((e.assistance ?? e.estimate) / e.capacity) * 100,
+    aux: 1,
   }));
-  let template = "";
+  let upcomingObject = {};
   for (const event of revenueAttendanceUpcoming) {
-    template += ` <tr>
-    <td>${event.category}</td>
-    <td>${event.revenue.toLocaleString()}</td>
-    <td>${event.attendance.toFixed(2)}%</td>
-    </tr>`;
+    if (!Object.hasOwn(upcomingObject, event.category)) {
+      upcomingObject[event.category] = { ...event };
+    } else {
+      upcomingObject[event.category].revenue += event.revenue;
+      upcomingObject[event.category].attendance += event.attendance;
+      upcomingObject[event.category].aux++;
+    }
   }
-  document.getElementById("upcoming-events").innerHTML = template;
-}
-
-function pastByCategory(eventsData) {
-  const pastEvents = eventsData.events.filter((event) => event.date < eventsData.currentDate);
-  const revenueAttendancePast = pastEvents.map((e) => ({
-    ...e,
-    revenue: e.price * e.assistance,
-    attendance: ((e.assistance ?? e.estimate) / e.capacity) * 100,
-  }));
+  upcomingObject = Object.values(upcomingObject);
+  upcomingObject.forEach((event) => {
+    event.attendance /= event.aux;
+  });
   let template = "";
-  for (const event of revenueAttendancePast) {
+  for (const event of upcomingObject) {
     template += ` <tr>
     <td>${event.category}</td>
     <td>${event.revenue.toLocaleString()}</td>
     <td>${event.attendance.toFixed(2)}%</td>
     </tr>`;
   }
-  document.getElementById("past-events").innerHTML = template;
+  document.getElementById(where).innerHTML = template;
 }

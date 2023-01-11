@@ -8,9 +8,9 @@ fetch("https://mindhub-xj03.onrender.com/api/amazing")
     () => (document.getElementById("message").innerHTML = `<h2 class="text-center p-4">Error trying to fetch data</h2>`)
   );
 
-const stringUrlConID = location.search;
+const stringUrlWithID = location.search;
 
-const generarUrl = new URLSearchParams(stringUrlConID);
+const generarUrl = new URLSearchParams(stringUrlWithID);
 
 const id = generarUrl.get("id");
 
